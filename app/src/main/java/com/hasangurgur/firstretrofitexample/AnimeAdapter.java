@@ -3,6 +3,7 @@ package com.hasangurgur.firstretrofitexample;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,10 +14,12 @@ import java.util.List;
 public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.ViewHolder> {
 
 
-    private List<AnimeModel> animelists;
+    private final List<AnimeModel> animelists;
+    private final MyClickListener listener;
 
-    public AnimeAdapter(List<AnimeModel> animelists) {
+    public AnimeAdapter(List<AnimeModel> animelists, MyClickListener listener) {
         this.animelists = animelists;
+        this.listener = listener;
     }
 
     @NonNull
@@ -33,6 +36,7 @@ public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.ViewHolder> 
         holder.anime.setText(animelists.get(position).getAnimeName());
         holder.character.setText(animelists.get(position).getCharName());
         holder.queto.setText(animelists.get(position).getQuoteName());
+        holder.bind(animelists.get(position), listener);
 
     }
 
@@ -51,6 +55,15 @@ public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.ViewHolder> 
             anime=itemView.findViewById(R.id.tv_anime);
             character=itemView.findViewById(R.id.tv_char);
             queto=itemView.findViewById(R.id.tv_queto);
+        }
+
+        public void bind(AnimeModel animeModel, MyClickListener listener) {
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    listener.onItemClick(animeModel);
+                }
+            });
         }
     }
 }
